@@ -1,11 +1,8 @@
 use rand::prelude::*;
 
-use std::u32;
-
 use crate::float::Float;
 use crate::vector::Vec3;
 use crate::ray::Ray;
-use crate::hitable::Hitable;
 use crate::camera::Camera;
 use crate::scene::Scene;
 
@@ -49,7 +46,7 @@ impl Renderer {
         }
     }
 
-    pub fn render_pixel<T>(&self, i: usize, j: usize, scene: &Scene<T>, camera: &Camera<T>) -> Vec3<T>
+    pub fn render_pixel<T>(&self, i: usize, j: usize, scene: &Scene<T>, camera: &dyn Camera<T>) -> Vec3<T>
         where T: Float
     {
         let two = T::from(2.0).unwrap();
@@ -81,7 +78,7 @@ impl Renderer {
         color
     }
 
-    pub fn render<T>(&self, scene: &Scene<T>, camera: &Camera<T>) -> Image<T>
+    pub fn render<T>(&self, scene: &Scene<T>, camera: &dyn Camera<T>) -> Image<T>
         where T: Float
     {
         let mut image = Image::<T>::new(self.width, self.height);
@@ -97,7 +94,7 @@ impl Renderer {
         image
     }
 
-    fn get_ray<T>(&self, i: usize, j: usize, camera: &Camera<T>, two: T) -> Ray<T>
+    fn get_ray<T>(&self, i: usize, j: usize, camera: &dyn Camera<T>, _two: T) -> Ray<T>
         where T: Float
     {
         let two = T::from(2.0).unwrap();

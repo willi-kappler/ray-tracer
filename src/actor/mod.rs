@@ -5,6 +5,6 @@ use crate::material::Material;
 pub struct Actor<T>
     where T: Float
 {
-    pub hitable: Box<Hitable<T>>,
-    pub material: Box<Material<T>>
+    pub hitable: Box<dyn Hitable<T>>,
+    pub material: Box<dyn Material<T>>
 }

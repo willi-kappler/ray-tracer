@@ -14,7 +14,7 @@ pub struct PlainMaterial<T>
 impl<T> PlainMaterial<T>
     where T: Float
 {
-    pub fn new(texture: Box<Texture<T>>) -> Self {
+    pub fn new(texture: Box<dyn Texture<T>>) -> Self {
         PlainMaterial {
             texture
         }

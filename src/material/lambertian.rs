@@ -1,4 +1,3 @@
-use rand::prelude::*;
 
 use crate::float::Float;
 use crate::vector::Vec3;
@@ -18,7 +17,7 @@ pub struct LambertianMaterial<T>
 impl<T> LambertianMaterial<T>
     where T: Float
 {
-    pub fn new(texture: Box<Texture<T>>, dimming: T) -> Self {
+    pub fn new(texture: Box<dyn Texture<T>>, dimming: T) -> Self {
         LambertianMaterial {
             texture,
             dimming
@@ -29,7 +28,7 @@ impl<T> LambertianMaterial<T>
 impl<T> Material<T> for LambertianMaterial<T>
     where T: Float
 {
-    fn scatter(&self, incident: &Ray<T>, hit: &Hit<T>) -> Scatter<T> {
+    fn scatter(&self, _incident: &Ray<T>, hit: &Hit<T>) -> Scatter<T> {
         let color = self.texture.get_color(T::zero(), T::zero(), &hit.point);
         let attenuation = Vec3::<T>::from_slice(color.get_data()) * self.dimming;
         let mut normal = Vec3::from_slice(hit.normal.get_data());

@@ -203,7 +203,7 @@ mod tests {
         let direction = [0.0, 0.0, -2.0];
         let ray = Ray::from_array(origin, direction);
 
-        if let Some(hit) = rectangle.hit(&ray, 0.0, 100.0) {
+        if let Some(_hit) = rectangle.hit(&ray, 0.0, 100.0) {
             assert!(false);
         };
     }

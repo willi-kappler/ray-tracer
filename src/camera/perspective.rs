@@ -217,5 +217,6 @@ mod tests {
         let ray = camera.get_ray(1.0, 0.0);
         assert_eq!(ray.get_origin().get_data(), camera.get_position().get_data());
         let ray = camera.get_ray(-1.0, 0.0);
+        assert_eq!(ray.get_origin().get_data(), camera.get_position().get_data());
     }
 }

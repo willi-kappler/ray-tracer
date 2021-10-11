@@ -1,5 +1,4 @@
 use crate::float::Float;
-use crate::vector::Vec3;
 use crate::ray::Ray;
 use crate::hit::Hit;
 use crate::boundingbox::BoundingBox;

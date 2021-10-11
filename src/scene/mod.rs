@@ -60,7 +60,7 @@ impl<T> Scene<T>
                 let scattered_ray = scatter.scattered;
                 match scattered_ray {
                     Some(ray_out) => {
-                        if (reflection < max_reflection) {
+                        if reflection < max_reflection {
                             return attenuation * self.get_color(&ray_out, reflection + 1, max_reflection);
                         } else {
                             return attenuation;

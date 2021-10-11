@@ -5,8 +5,8 @@ use super::Texture;
 pub struct CheckerTexture<T>
     where T: Float
 {
-    texture0: Box<Texture<T>>,
-    texture1: Box<Texture<T>>,
+    texture0: Box<dyn Texture<T>>,
+    texture1: Box<dyn Texture<T>>,
     period: Vec3<T>
 
 }
@@ -14,7 +14,7 @@ pub struct CheckerTexture<T>
 impl<T> CheckerTexture<T>
     where T: Float
 {
-    pub fn new(texture0:  Box<Texture<T>>, texture1:  Box<Texture<T>>) -> Self {
+    pub fn new(texture0:  Box<dyn Texture<T>>, texture1:  Box<dyn Texture<T>>) -> Self {
         let period = Vec3::<T>::from_array([T::one(), T::one(), T::one()]);
         CheckerTexture {
             texture0,
@@ -32,7 +32,7 @@ impl<T> Texture<T> for CheckerTexture<T>
     where T: Float
 {
     fn get_color(&self, u: T, v: T, point: &Vec3<T>) -> Vec3<T> {
-        let two = T::from(2.0).unwrap();
+        let _two = T::from(2.0).unwrap();
         let x = T::to_i32(&((point.get_data()[0] / self.period.get_data()[0]).floor())).unwrap().abs() % 2;
         let y = T::to_i32(&((point.get_data()[1] / self.period.get_data()[1]).floor())).unwrap().abs() % 2;
         let z = T::to_i32(&((point.get_data()[2] / self.period.get_data()[2]).floor())).unwrap().abs() % 2;

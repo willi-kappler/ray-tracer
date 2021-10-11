@@ -143,7 +143,7 @@ mod tests {
         let ray = Ray::from_array(origin, direction);
         let hit = sphere.hit(&ray, 0.0, 100.0);
         match hit {
-            Some(hit) => {
+            Some(_hit) => {
                 assert!(false);
             },
             None => {}
@@ -154,7 +154,7 @@ mod tests {
         let ray = Ray::from_array(origin, direction);
         let hit = sphere.hit(&ray, 0.0, 100.0);
         match hit {
-            Some(hit) => {
+            Some(_hit) => {
                 assert!(false);
             },
             None => {}

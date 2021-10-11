@@ -1,4 +1,3 @@
-use rand::prelude::*;
 
 use crate::float::Float;
 use crate::vector::Vec3;
@@ -18,7 +17,7 @@ pub struct DielectricMaterial<T>
 impl<T> DielectricMaterial<T>
     where T: Float
 {
-    pub fn new(texture: Box<Texture<T>>, n: T) -> Self {
+    pub fn new(texture: Box<dyn Texture<T>>, n: T) -> Self {
         DielectricMaterial {
             texture,
             n

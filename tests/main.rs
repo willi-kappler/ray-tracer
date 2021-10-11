@@ -26,10 +26,6 @@ use ray_tracer::texture::uniform::UniformTexture;
 use ray_tracer::texture::checker::CheckerTexture;
 use ray_tracer::constants::Axis;
 
-const MULT : usize = 40;
-const SAMPLING : usize = 4;
-const REFLECTIONS : usize = 8;
-
 fn to_u8(f: f64) -> u8 {
     (f * 255.0) as u8
 }
@@ -99,8 +95,8 @@ fn create_rectangle_room(length: f64, width: f64, height: f64, light: f64) -> Ve
     let dimming = 1.0;
 
     // Rectangle used as light
-    let width_axis = Axis::X;
-    let height_axis = Axis::Y;
+    let _width_axis = Axis::X;
+    let _height_axis = Axis::Y;
     // let hitable = Box::new(Rectangle::new(light, width_axis, light, height_axis));
     let hitable = Box::new(Cube::new(light, light, 0.125 * light));
     let hitable = Box::new(Translation::new(hitable, Vec3::from_array([0.0, width / 4.0, height / 2.0])));
@@ -139,7 +135,7 @@ fn create_rectangle_room(length: f64, width: f64, height: f64, light: f64) -> Ve
     let rectangle = Box::new(Translation::new(rectangle, Vec3::from_array([0.0, - width / 2.0, 0.0])));
     let texture = Box::new(UniformTexture::new(Vec3::from_array([1.0, 1.0, 1.0])));
     let material = Box::new(LambertianMaterial::<f64>::new(texture, dimming));
-    let actor = Actor::<f64> { hitable: rectangle, material};
+    let _actor = Actor::<f64> { hitable: rectangle, material};
     // actors.push(actor);
 
     // Rectangle used as left wall
@@ -200,7 +196,7 @@ fn create_cube_box(length: f64, width: f64, height: f64, thickness: f64) -> Box<
 
     // cube used as back wall
     let hitable = Box::new(Cube::new(length, thickness, height));
-    let hitable = Box::new(Translation::new(hitable, Vec3::from_array([0.0, width / 2.0, 0.0])));
+    let _hitable = Box::new(Translation::new(hitable, Vec3::from_array([0.0, width / 2.0, 0.0])));
     // group.add_hitable(hitable);
 
     group
@@ -281,7 +277,7 @@ fn rectangle_room() {
     let actor = Actor {hitable, material};
     scene.add_actor(actor);
 
-    let mul = 120;
+    let mul = 30;
     let width = 12 * mul;
     let height = 8 * mul;
     let aspect = width as f64 / height as f64;
@@ -354,7 +350,7 @@ fn cube_scene() {
     let actor = Actor::<f64> { hitable, material};
     scene.add_actor(actor);
 
-    let mul = 40;
+    let mul = 10;
     let width = 12 * mul;
     let height = 8 * mul;
     let aspect = width as f64 / height as f64;
@@ -441,7 +437,7 @@ fn sphere_in_box() {
     let actor = Actor {hitable, material};
     scene.add_actor(actor);
 
-    let mul = 40;
+    let mul = 10;
     let width = 12 * mul;
     let height = 8 * mul;
     let aspect = width as f64 / height as f64;
@@ -513,7 +509,7 @@ fn random_scene() {
             y = MIN_Y + (MAX_Y - MIN_Y) * y / N_SPHERES_Y as f64;
 
             let hitable_select = rng.gen::<f64>();
-            let hitable : Box<Hitable<f64>> = if hitable_select < SPHERE_PROBABILITY {
+            let hitable : Box<dyn Hitable<f64>> = if hitable_select < SPHERE_PROBABILITY {
                 let hitable = Box::new(Sphere::<f64>::new(radius));
                 Box::new(Translation::new(hitable, Vec3::from_array([x, y, radius])))
             } else {
@@ -525,7 +521,7 @@ fn random_scene() {
             let color = Vec3::from_array([rng.gen::<f64>(), rng.gen::<f64>(), rng.gen::<f64>()]);
             let texture = Box::new(UniformTexture::new(color));
             let material_select = rng.gen::<f64>();
-            let material : Box<Material<f64>> = if material_select < LAMBERTIAN_PROBABILITY {
+            let material : Box<dyn Material<f64>> = if material_select < LAMBERTIAN_PROBABILITY {
                 Box::new(LambertianMaterial::<f64>::new(texture, 0.5))
             } else if material_select < LAMBERTIAN_PROBABILITY + METAL_PROBABILITY {
                 let fuzziness = MIN_FUZZINESS + (MAX_FUZZINESS - MIN_FUZZINESS) * rng.gen::<f64>();
@@ -589,7 +585,7 @@ fn random_scene() {
     let actor = Actor::<f64> { hitable, material };
     scene.add_actor(actor);
 
-    let mul = 120;
+    let mul = 30;
     let width = 16 * mul;
     let height = 9 * mul;
     let aspect = width as f64 / height as f64;
@@ -664,7 +660,7 @@ fn tree() {
 
                 let color = Vec3::from_array([rng.gen::<f64>(), rng.gen::<f64>(), rng.gen::<f64>()]);
                 let texture = Box::new(UniformTexture::new(color));
-                let material : Box<Material<f64>> = Box::new(MetalMaterial::new(texture, 0.0));
+                let material : Box<dyn Material<f64>> = Box::new(MetalMaterial::new(texture, 0.0));
 
                 let actor = Actor::<f64> { hitable: Box::new(sphere), material};
                 scene.add_actor(actor);
@@ -692,24 +688,24 @@ fn tree() {
     scene.set_tree_type(TreeType::Linear);
     let now = Instant::now();
     let image_linear = renderer.render(&scene, &camera);
-    let t_linear = now.elapsed().as_millis();
+    let _t_linear = now.elapsed().as_millis();
     // println!("Linear: {}", t_linear);
 
     scene.set_tree_type(TreeType::Binary);
     let now = Instant::now();
     let image_binary = renderer.render(&mut scene, &camera);
-    let t_binary = now.elapsed().as_millis();
+    let _t_binary = now.elapsed().as_millis();
     let diff = image_diff(&image_linear, &image_binary);
-    assert!(t_binary < t_linear);
+    //assert!(t_binary < t_linear);
     assert_eq!(diff, 0.0);
     // println!("Binary -  t: {}  diff: {}", t_binary, diff);
 
     scene.set_tree_type(TreeType::Oct);
     let now = Instant::now();
     let image_oct = renderer.render(&scene, &camera);
-    let t_oct = now.elapsed().as_millis();
+    let _t_oct = now.elapsed().as_millis();
     let diff = image_diff(&image_linear, &image_oct);
-    assert!(t_oct < t_linear);
+    //assert!(t_oct < t_linear);
     assert_eq!(diff, 0.0);
     // println!("Oct -  t: {}  diff: {}", t_oct, diff);
 }

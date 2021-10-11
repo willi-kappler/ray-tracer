@@ -237,14 +237,14 @@ mod tests {
         for i in 0..3 {
             let mut origin = Vec3::new();
             origin.get_data_mut()[i] = - 2.0 * half_size.get_data()[i];
-            let mut direction = Vec3::new();
+            let direction = Vec3::new();
             origin.get_data_mut()[i] = 1.0;
             let ray = Ray::from_vec(origin, direction);
             assert!(box0.hit(&ray, 0.0, 100.0));
 
             let mut origin = Vec3::new();
             origin.get_data_mut()[i] = - 2.0 * half_size.get_data()[i];
-            let mut direction = Vec3::new();
+            let direction = Vec3::new();
             origin.get_data_mut()[(i + 1) % 3] = 1.0;
             let ray = Ray::from_vec(origin, direction);
             assert!(!box0.hit(&ray, 0.0, 100.0));

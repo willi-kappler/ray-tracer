@@ -1,4 +1,3 @@
-use rand::prelude::*;
 
 use crate::float::Float;
 use crate::vector::Vec3;
@@ -18,7 +17,7 @@ pub struct MetalMaterial<T>
 impl<T> MetalMaterial<T>
     where T: Float
 {
-    pub fn new(texture: Box<Texture<T>>, fuzziness: T) -> Self {
+    pub fn new(texture: Box<dyn Texture<T>>, fuzziness: T) -> Self {
         MetalMaterial {
             texture,
             fuzziness

@@ -1,5 +1,4 @@
 use crate::float::Float;
-use crate::vector::Vec3;
 use crate::ray::Ray;
 use crate::hit::Hit;
 use crate::hitable::Hitable;
@@ -8,7 +7,6 @@ use crate::hitable::transform::Translation;
 use crate::hitable::primitive::Group;
 use crate::boundingbox::BoundingBox;
 use crate::constants::Axis;
-use crate::utils::axis_to_index;
 
 pub struct Cube<T>
     where T: Float
@@ -49,7 +47,7 @@ impl<T> Cube<T>
             let (width_axis, height_axis) = axes[i];
             let face = Box::new(Rectangle::<T>::new(width, width_axis, height, height_axis));
             let translation = face.get_normal() * depth * half;
-            let face : Box<Hitable<T>> = Box::new(Translation::new(face, translation));
+            let face : Box<dyn Hitable<T>> = Box::new(Translation::new(face, translation));
             faces.add_hitable(face);
         };
 
@@ -87,7 +85,7 @@ mod tests {
         let length = 2.0;
         let width = 2.0;
         let height = 4.0;
-        let cube = Cube::<f64>::new(length, width, height);
+        let _cube = Cube::<f64>::new(length, width, height);
     }
 
     #[test]
