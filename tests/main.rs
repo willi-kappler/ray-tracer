@@ -277,7 +277,7 @@ fn rectangle_room() {
     let actor = Actor {hitable, material};
     scene.add_actor(actor);
 
-    let mul = 30;
+    let mul = 4;
     let width = 12 * mul;
     let height = 8 * mul;
     let aspect = width as f64 / height as f64;
@@ -293,13 +293,13 @@ fn rectangle_room() {
 
     scene.set_tree_type(TreeType::Oct);
 
-    let renderer = Renderer::new(width, height, 0, 0, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 0, 0, false);
     let image = renderer.render(&mut scene, &camera);
     let gamma = 2.0;
     print_ppm(&image, gamma, "rectangle_room_preview.ppm");
 
     let gamma = 2.6;
-    let renderer = Renderer::new(width, height, 1, 32, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 1, 32, false);
     let sampling = 1024;
     let mut image = Image::new(width, height);
     for i in 0..sampling {
@@ -350,7 +350,7 @@ fn cube_scene() {
     let actor = Actor::<f64> { hitable, material};
     scene.add_actor(actor);
 
-    let mul = 10;
+    let mul = 4;
     let width = 12 * mul;
     let height = 8 * mul;
     let aspect = width as f64 / height as f64;
@@ -366,12 +366,12 @@ fn cube_scene() {
 
     scene.set_tree_type(TreeType::Oct);
 
-    let renderer = Renderer::new(width, height, 0, 0, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 0, 0, false);
     let image = renderer.render(&mut scene, &camera);
     let gamma = 2.0;
     print_ppm(&image, gamma, "cube_scene_preview.ppm");
 
-    let renderer = Renderer::new(width, height, 32, 8, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 32, 8, false);
     let image = renderer.render(&mut scene, &camera);
     print_ppm(&image, gamma, "cube_scene.ppm");
 }
@@ -437,7 +437,7 @@ fn sphere_in_box() {
     let actor = Actor {hitable, material};
     scene.add_actor(actor);
 
-    let mul = 10;
+    let mul = 4;
     let width = 12 * mul;
     let height = 8 * mul;
     let aspect = width as f64 / height as f64;
@@ -453,12 +453,12 @@ fn sphere_in_box() {
 
     scene.set_tree_type(TreeType::Oct);
 
-    let renderer = Renderer::new(width, height, 0, 0, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 0, 0, false);
     let image = renderer.render(&mut scene, &camera);
     let gamma = 2.0;
     print_ppm(&image, gamma, "sphere_in_box_preview.ppm");
 
-    let renderer = Renderer::new(width, height, 1, 8, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 1, 8, false);
     let sampling = 128;
     let mut image = Image::new(width, height);
     for i in 0..sampling {
@@ -585,7 +585,7 @@ fn random_scene() {
     let actor = Actor::<f64> { hitable, material };
     scene.add_actor(actor);
 
-    let mul = 30;
+    let mul = 4;
     let width = 16 * mul;
     let height = 9 * mul;
     let aspect = width as f64 / height as f64;
@@ -606,13 +606,13 @@ fn random_scene() {
 
     scene.set_tree_type(TreeType::Oct);
 
-    let renderer = Renderer::new(width/4, height/4, 0, 2, false);
+    let renderer = Renderer::new(0, width/4, 0, height/4, width/4, height/4, 0, 2, false);
     let image = renderer.render(&mut scene, &camera);
     let gamma = 2.0;
     print_ppm(&image, gamma, "random_scene_preview.ppm");
 
     let mut image = Image::new(width, height);
-    let renderer = Renderer::new(width, height, 1, 16, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 1, 16, false);
     let sampling = 1024;
     for i in 0..sampling {
         let delta = renderer.render(&scene, &camera);
@@ -668,7 +668,7 @@ fn tree() {
         }
     }
 
-    let mul = 8;
+    let mul = 4;
     let width = 16 * mul;
     let height = 9 * mul;
     let aspect = width as f64 / height as f64;
@@ -683,7 +683,7 @@ fn tree() {
     let focus = (camera.get_lookat() - camera.get_position()).norm();
     camera.set_focus(focus);
 
-    let renderer = Renderer::new(width, height, 0, 0, false);
+    let renderer = Renderer::new(0, width, 0, height, width, height, 0, 0, false);
 
     scene.set_tree_type(TreeType::Linear);
     let now = Instant::now();

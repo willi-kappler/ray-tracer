@@ -28,6 +28,10 @@ impl<T> Image<T>
 }
 
 pub struct Renderer {
+    x0: usize,
+    x1: usize,
+    y0: usize,
+    y1: usize,
     width: usize,
     height: usize,
     sampling: usize,
@@ -36,8 +40,13 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub fn new(width: usize, height: usize, sampling: usize, reflections: usize, antialiasing: bool) -> Self {
+    pub fn new(x0: usize, x1: usize, y0: usize, y1: usize, width: usize, height: usize, sampling: usize, reflections: usize, antialiasing: bool) -> Self {
+
         Renderer {
+            x0,
+            x1,
+            y0,
+            y1,
             width,
             height,
             sampling,
@@ -81,11 +90,13 @@ impl Renderer {
     pub fn render<T>(&self, scene: &Scene<T>, camera: &dyn Camera<T>) -> Image<T>
         where T: Float
     {
-        let mut image = Image::<T>::new(self.width, self.height);
-        for j in 0..self.height {
-            for i in 0..self.width {
-                let color = self.render_pixel(i, j, scene, camera);
-                let index = j * self.width + i;
+        let img_width = self.x1 - self.x0;
+        let img_height = self.y1 - self.y0;
+        let mut image = Image::<T>::new(img_width, img_height);
+        for j in 0..img_height {
+            for i in 0..img_width {
+                let color = self.render_pixel(self.x0 + i, self.y0 + j, scene, camera);
+                let index = j * img_width + i;
                 image.data[3 * index] = color.get_data()[0];
                 image.data[3 * index + 1] = color.get_data()[1];
                 image.data[3 * index + 2] = color.get_data()[2];
